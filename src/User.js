@@ -16,9 +16,9 @@ const User = (users) => {
          return <div key={index}>
            <hr/>
            <h2>{user.name}</h2>
-           <p className="small">@{user.id} </p>
+           <p className="small text-secondary">@{user.id} </p>
            <p>{user.description}</p>
-           <p className="small text-end" >登録日: {new Date(user._created_at).getFullYear()}年
+           <p className="small text-end text-secondary" >登録日: {new Date(user._created_at).getFullYear()}年
                     {new Date(user._created_at).getMonth() + 1}月
                     {new Date(user._created_at).getDate()}日
            </p>

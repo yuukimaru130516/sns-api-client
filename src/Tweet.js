@@ -7,6 +7,9 @@ const Tweet = (tweets) => {
   const [page, setPage] = useState("all");
   const [userTweet, setUserTweet] = useState([]);
 
+  let times = [];
+  let diffTimes = "";
+
   const dayOfWeekStrJP = [ " (日)", " (月)", " (火)", " (水)", " (木)", " (金)", " (土)" ]
 
   // ユーザー登録されている場合ユーザー名を返す
@@ -31,6 +34,20 @@ const Tweet = (tweets) => {
     setUserTweet(userTweet);
   }
 
+  const getTimeDate = (tweetTime) => {
+    times = [];
+    const createTime = new Date(tweetTime);
+    const miriCreateTime = createTime.getTime();
+    times.push(createTime.getFullYear(), createTime.getMonth() + 1,
+    createTime.getDate(), createTime.getHours(), createTime.getMinutes());
+
+    //TODO 現在の時刻を取得してツイートが何分前か表示する
+    const nowTime = new Date().getTime();
+    const diff = nowTime - miriCreateTime;
+    const diffDisplayTime = diff/(1000*60*60);
+    diffDisplayTime < 24 ? diffTimes = Math.floor(diffDisplayTime) + "時間前" : diffTimes = Math.floor(diffDisplayTime/24) + "日前";
+  }
+
 
   return (
     page === "all" ?
@@ -40,16 +57,21 @@ const Tweet = (tweets) => {
       tweets.tweets.slice(0, limit)
         .map((tweet, index) => {
         return <div key={index} onClick={() => {userPage(isExistUserName(tweet._user_id), tweet._user_id)}}>
-        <hr/>
-        <h3>{isExistUserName(tweet._user_id)}</h3>
-        <p>{tweet.text} </p>
-        <p> {new Date(tweet._created_at).getFullYear()}年
-            {new Date(tweet._created_at).getMonth() + 1}月
-            {new Date(tweet._created_at).getDate()}日
-            {new Date(tweet._created_at).getHours()}時
-            {new Date(tweet._created_at).getMinutes()}分
-            {dayOfWeekStrJP[new Date(tweet._created_at).getDay()]}
-        </p>
+          { getTimeDate(tweet._created_at)}
+          <hr/>
+          <Row>
+            <Col xs={8} md={4}>
+              <h3>{isExistUserName(tweet._user_id)}</h3>
+            </Col>
+            <Col xs={4} md={4} className="text-end">
+              <p className="small text-secondary">{diffTimes}</p>
+            </Col>
+          </Row>
+          <p className="small text-secondary">@{tweet._user_id}</p>
+          <p className="pt-2 pb-2">{tweet.text} </p>
+          <p className="small text-secondary"> {`${times[0]}年${times[1]}月${times[2]}日${times[3]}時${times[4]}分`}
+              {dayOfWeekStrJP[new Date(tweet._created_at).getDay()]}
+          </p>
         </div>
         })
       }
@@ -61,10 +83,10 @@ const Tweet = (tweets) => {
     :
     <div>
       <Row>
-        <Col sm={10} md={10}>
+        <Col xs={10} md={10}>
         <h2>{page}</h2>
         </Col>
-        <Col sm={2} md={10}>
+        <Col xs={2} md={2}>
           <div onClick={() => {setPage('all')}} className="text-end">
             <Image src={process.env.PUBLIC_URL + '/angle-double-left.svg'}/>
           </div>
