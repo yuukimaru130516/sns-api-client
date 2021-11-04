@@ -1,5 +1,6 @@
 import React from 'react'
 import {useState} from 'react';
+import { Image } from 'react-bootstrap';
 
 const User = (users) => {
   const [limit, setLimit] = useState(20);
@@ -11,19 +12,22 @@ const User = (users) => {
       {
         users.users.slice(0, limit)
          .map((user, index) => {
+        // TODO ユーザー名がクリックされたら、ユーザーページを表示する
          return <div key={index}>
            <hr/>
-           <p>id : {user.id} </p>
-           <p>ユーザー名：{user.name}</p>
+           <h2>{user.name}</h2>
+           <p className="small">@{user.id} </p>
            <p>{user.description}</p>
-           <p>登録日: {new Date(user._created_at).getFullYear()}年
+           <p className="small text-end" >登録日: {new Date(user._created_at).getFullYear()}年
                     {new Date(user._created_at).getMonth() + 1}月
                     {new Date(user._created_at).getDate()}日
            </p>
          </div>
         })
       }
-      <button onClick={() => {setLimit(limit + 20)}}>更に読みこむ</button>
+      <div onClick={() => {setLimit(limit + 20)}} className="text-center">
+        <Image src={process.env.PUBLIC_URL + '/rotate-right.svg'}/>
+      </div>
     </div>
   )
 }

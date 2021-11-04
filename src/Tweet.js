@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import {Row, Col} from 'react-bootstrap';
+import {Row, Col, Image} from 'react-bootstrap';
 
 const Tweet = (tweets) => {
   const [limit, setLimit] = useState(20);
@@ -53,16 +53,21 @@ const Tweet = (tweets) => {
         </div>
         })
       }
-      <button onClick={() => {setLimit(limit + 20)}}>更に読みこむ</button>
+      <hr/>
+      <div onClick={() => {setLimit(limit + 20)}} className="text-center">
+        <Image src={process.env.PUBLIC_URL + '/rotate-right.svg'}/>
+      </div>
     </div>
     :
     <div>
       <Row>
-        <Col sm={10}>
+        <Col sm={10} md={10}>
         <h2>{page}</h2>
         </Col>
-        <Col sm={2}>
-        <button className="sm-2" onClick={() => setPage("all")}>戻る</button>
+        <Col sm={2} md={10}>
+          <div onClick={() => {setPage('all')}} className="text-end">
+            <Image src={process.env.PUBLIC_URL + '/angle-double-left.svg'}/>
+          </div>
         </Col>
       </Row>
       {

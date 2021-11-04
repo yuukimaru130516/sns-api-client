@@ -17,11 +17,9 @@ const App = () => {
 
   useEffect(() => {
     fetchTweet();
+    fetchUser();
   },[]);
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   const fetchTweet = async () => {
     await axios.get(url + '/text/all?$orderby=_created_at desc')
@@ -39,41 +37,50 @@ const App = () => {
 
   return (
     <div className="bg-light">
-      <header className="container">
-        <h1>SNS for Engineer</h1>
-        <Row className="pt-3 pb-3">
-          <Col xs={3} md={3} className="text-center" onClick={() => setTab('home')}>
-            {
-              tab === 'home' ? <Image src={process.env.PUBLIC_URL + '/home2.svg'}/> :
-              <Image src={process.env.PUBLIC_URL + '/home.svg'} />
-            }
+      <header className="bg-white pt-2 fixed-top">
+        <Row className=" pb-2">
+          <Col xs={10} md={10} className="pt-1">
+            <Image src={process.env.PUBLIC_URL + '/logo.png' } />
           </Col>
-          <Col xs={3} md={3} className="text-center" onClick={() => setTab('tweet')}>
-            {
-              tab === 'tweet' ? <Image src={process.env.PUBLIC_URL + '/comment2.svg'}/> :
-              <Image src={process.env.PUBLIC_URL + '/comment.svg'}/>
-            }
-          </Col>
-          <Col xs={3} md={3} className="text-center" onClick={() => setTab('user')}>
-            {
-              tab === 'user' ? <Image src={process.env.PUBLIC_URL + '/user2.svg'}/> :
-              <Image src={process.env.PUBLIC_URL + '/user.svg'}/>
-            }
-          </Col>
-          <Col xs={3} md={3} className="text-center" onClick={() => setTab('newTweet')}>
-            {
-              tab === 'newTweet' ? <Image src={process.env.PUBLIC_URL + '/edit2.svg'}/> :
-              <Image src={process.env.PUBLIC_URL + '/edit.svg'}/>
-            }
+          <Col xs={2} md={2} className="text-start pt-3">
+            <Image src={process.env.PUBLIC_URL + '/menu-burger.svg'}/>
           </Col>
         </Row>
       </header>
-      <main className="container">
+      <main className="container pt-5 mt-5 pb-5 mb-5" >
         {
         tab === 'tweet' ? <Tweet tweets={tweets} users={users}/> :
         tab === 'home' ? <Home /> : tab === 'user' ? <User users={users}/> : <NewTweet/>
         }
       </main>
+      <footer className="fixed-bottom  bg-white">
+          <Row className="pt-3 pb-3">
+            <Col xs={3} md={3} className="text-center" onClick={() => setTab('home')}>
+              {
+                tab === 'home' ? <Image src={process.env.PUBLIC_URL + '/home2.svg'}/> :
+                <Image src={process.env.PUBLIC_URL + '/home.svg'} />
+              }
+            </Col>
+            <Col xs={3} md={3} className="text-center" onClick={() => setTab('tweet')}>
+              {
+                tab === 'tweet' ? <Image src={process.env.PUBLIC_URL + '/comment2.svg'}/> :
+                <Image src={process.env.PUBLIC_URL + '/comment.svg'}/>
+              }
+            </Col>
+            <Col xs={3} md={3} className="text-center" onClick={() => setTab('user')}>
+              {
+                tab === 'user' ? <Image src={process.env.PUBLIC_URL + '/user2.svg'}/> :
+                <Image src={process.env.PUBLIC_URL + '/user.svg'}/>
+              }
+            </Col>
+            <Col xs={3} md={3} className="text-center" onClick={() => setTab('newTweet')}>
+              {
+                tab === 'newTweet' ? <Image src={process.env.PUBLIC_URL + '/edit2.svg'}/> :
+                <Image src={process.env.PUBLIC_URL + '/edit.svg'}/>
+              }
+            </Col>
+          </Row>
+      </footer>
     </div>
   )
 }
