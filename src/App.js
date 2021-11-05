@@ -41,13 +41,13 @@ const App = () => {
     const data = {
       "text": tweetText
     };
-    setTweetData(tweetText);
 
     axios.post(url + '/text', data,
        {
           headers: {'Authorization': 'HelloWorld'}
         }).then(res => {
           console.log(res.data);
+          setTweetData(tweetText);
           setTab('tweet');
         }).catch(err => {
           console.log(err);
@@ -59,10 +59,10 @@ const App = () => {
       "name": userName,
       "description": userBio
     }
-    setUserData(userName);
     axios.post(url + '/user/create_user', user)
       .then((res) => {
         console.log(res.data);
+        setUserData(userName);
         setTab('user')
       }).catch(err => {
         console.log(err);
@@ -73,19 +73,19 @@ const App = () => {
     <div className="bg-light">
       <header className="bg-white pt-2 fixed-top">
         <Row className=" pb-2">
-          <Col xs={10} md={10} className="pt-1">
-            <Image src={process.env.PUBLIC_URL + '/logo.png' } />
+          <Col xs={10} md={10} className="pt-1 ">
+            <Image className ="ms-2" src={process.env.PUBLIC_URL + '/logo.svg' } />
           </Col>
-          <Col xs={2} md={2} className="text-start pt-3">
+          <Col xs={2} md={2} className=" pt-3">
             <Image src={process.env.PUBLIC_URL + '/menu-burger.svg'}/>
           </Col>
         </Row>
       </header>
       <main className="container vh-100" >
-        {
+      {
         tab === 'tweet' ? <Tweet tweets={tweets} users={users}/> :
         tab === 'home' ? <Home onCreateUser = {createUser}/> : tab === 'user' ? <User users={users}/> : <NewTweet onPostTweet={postTweet}/>
-        }
+      }
       </main>
       <footer className="fixed-bottom  bg-white">
           <Row className="pt-3 pb-3">
