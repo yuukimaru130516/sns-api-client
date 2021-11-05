@@ -12,13 +12,15 @@ const App = () => {
   const [tab, setTab] = useState('home');
   const [tweets, setTweets] = useState([]);
   const [users, setUsers] = useState([]);
+  const [tweetData, setTweetData] = useState('');
+  const [userData, setUserData] = useState('');
 
   const url = `https://versatileapi.herokuapp.com/api`;
 
   useEffect(() => {
     fetchTweet();
     fetchUser();
-  },[]);
+  },[tweetData, userData]);
 
 
   const fetchTweet = async () => {
@@ -35,6 +37,38 @@ const App = () => {
       });
   }
 
+  const postTweet = (tweetText) => {
+    const data = {
+      "text": tweetText
+    };
+    setTweetData(tweetText);
+
+    axios.post(url + '/text', data,
+       {
+          headers: {'Authorization': 'HelloWorld'}
+        }).then(res => {
+          console.log(res.data);
+          setTab('tweet');
+        }).catch(err => {
+          console.log(err);
+        })
+  }
+
+  const createUser = (userName, userBio) => {
+    const user = {
+      "name": userName,
+      "description": userBio
+    }
+    setUserData(userName);
+    axios.post(url + '/user/create_user', user)
+      .then((res) => {
+        console.log(res.data);
+        setTab('user')
+      }).catch(err => {
+        console.log(err);
+      })
+    }
+
   return (
     <div className="bg-light">
       <header className="bg-white pt-2 fixed-top">
@@ -47,10 +81,10 @@ const App = () => {
           </Col>
         </Row>
       </header>
-      <main className="container pt-5 mt-5 pb-5 mb-5" >
+      <main className="container vh-100" >
         {
         tab === 'tweet' ? <Tweet tweets={tweets} users={users}/> :
-        tab === 'home' ? <Home /> : tab === 'user' ? <User users={users}/> : <NewTweet/>
+        tab === 'home' ? <Home onCreateUser = {createUser}/> : tab === 'user' ? <User users={users}/> : <NewTweet onPostTweet={postTweet}/>
         }
       </main>
       <footer className="fixed-bottom  bg-white">

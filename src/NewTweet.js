@@ -1,12 +1,24 @@
 import React from 'react'
+import { useState } from 'react';
 
-const NewTweet = () => {
+const NewTweet = ({ onPostTweet }) => {
+  const [text, setText] = useState('');
+
+  const submitTweet = (e) => {
+    e.preventDefault();
+    onPostTweet(text)
+  }
   return (
-    <div>
-      <h2>新規ツイート</h2>
-      <form>
-        <textarea rows="8" cols="40" className="mt-3 mb-5"></textarea>
-        <button>送信</button>
+    <div className="pt-5">
+      <h2 className="pt-5">新規ツイート</h2>
+      <form onSubmit={submitTweet}>
+        <div className="pt-3 pb-3">
+          <textarea placeholder="いまどうしてる？" className="form-control" rows="5"
+                    value={text} onChange={e => setText(e.target.value)} />
+        </div>
+        <div className="text-end pt-1 pb-5">
+          <button className="btn btn-dark" type="submit">ツイート！</button>
+        </div>
       </form>
     </div>
   )

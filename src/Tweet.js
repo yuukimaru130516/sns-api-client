@@ -51,8 +51,8 @@ const Tweet = (tweets) => {
 
   return (
     page === "all" ?
-    <div>
-      <h2>ツイート一覧</h2>
+    <div className="pt-5 pb-5">
+      <h2 className="pt-5">ツイート一覧</h2>
       {
       tweets.tweets.slice(0, limit)
         .map((tweet, index) => {
@@ -60,7 +60,7 @@ const Tweet = (tweets) => {
           { getTimeDate(tweet._created_at)}
           <hr/>
           <Row>
-            <Col xs={8} md={4}>
+            <Col xs={8} md={8}>
               <h3>{isExistUserName(tweet._user_id)}</h3>
             </Col>
             <Col xs={4} md={4} className="text-end">
@@ -69,19 +69,19 @@ const Tweet = (tweets) => {
           </Row>
           <p className="small text-secondary">@{tweet._user_id}</p>
           <p className="pt-2 pb-2">{tweet.text} </p>
-          <p className="small text-secondary"> {`${times[0]}年${times[1]}月${times[2]}日${times[3]}時${times[4]}分`}
+          <p className="small text-secondary text-end"> {`${times[0]}年${times[1]}月${times[2]}日${times[3]}時${times[4]}分`}
               {dayOfWeekStrJP[new Date(tweet._created_at).getDay()]}
           </p>
         </div>
         })
       }
       <hr/>
-      <div onClick={() => {setLimit(limit + 20)}} className="text-center">
+      <div onClick={() => {setLimit(limit + 20)}} className="text-center pb-5">
         <Image src={process.env.PUBLIC_URL + '/rotate-right.svg'}/>
       </div>
     </div>
     :
-    <div>
+    <div className="pt-5 mt-5 pb-5">
       <Row>
         <Col xs={10} md={10}>
         <h2>{page}</h2>
