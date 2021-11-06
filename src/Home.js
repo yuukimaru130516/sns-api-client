@@ -14,7 +14,7 @@ const Home = ({onCreateUser}) => {
 
   return (
     tab === "new" ?
-    <div className="pt-5">
+    <div className="pt-5 vh-100">
       <h3 className="pt-5">新規登録</h3>
       <Form className="pt-3" onSubmit={submitUserInfo}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -32,7 +32,7 @@ const Home = ({onCreateUser}) => {
       <p onClick={() => {setTab('home')}}>ログインはこちら</p>
     </div>
     :
-    <div className="pt-5">
+    <div className="pt-5 vh-100">
       <h2 className="pt-5">ホーム</h2>
       <p onClick={() => {setTab('new')}}>新規登録はこちら</p>
     </div>

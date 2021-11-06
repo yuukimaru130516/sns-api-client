@@ -81,7 +81,7 @@ const App = () => {
           </Col>
         </Row>
       </header>
-      <main className="container vh-100" >
+      <main className="container" >
       {
         tab === 'tweet' ? <Tweet tweets={tweets} users={users}/> :
         tab === 'home' ? <Home onCreateUser = {createUser}/> : tab === 'user' ? <User users={users}/> : <NewTweet onPostTweet={postTweet}/>

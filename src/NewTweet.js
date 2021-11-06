@@ -8,8 +8,8 @@ const NewTweet = ({ onPostTweet }) => {
     e.preventDefault();
     onPostTweet(text)
   }
-  return (
-    <div className="pt-5">
+  return (  
+    <div className="pt-5 vh-100">
       <h2 className="pt-5">新規ツイート</h2>
       <form onSubmit={submitTweet}>
         <div className="pt-3 pb-3">
