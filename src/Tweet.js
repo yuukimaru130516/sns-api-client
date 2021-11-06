@@ -7,6 +7,8 @@ const Tweet = (tweets) => {
   const [page, setPage] = useState("all");
   const [userTweet, setUserTweet] = useState([]);
   const [replay_show, setReplay_show] = useState('hidden');
+  const [click, setClick] = useState('none');
+  const [req, setReq] = useState([]);
 
   let times = [];
   let diffTimes = "";
@@ -48,12 +50,24 @@ const Tweet = (tweets) => {
     diffDisplayTime < 24 ? diffTimes = Math.floor(diffDisplayTime) + "時間前" : diffTimes = Math.floor(diffDisplayTime/24) + "日前";
   }
 
+  const getReplyCount = (tweetId) => {
+    const count = tweets.tweets.filter((tweet) => {
+      return tweet.in_reply_to_text_id === tweetId
+    })
+    return count
+}
+
   const getReply = (tweetId) => {
     const Reply =  tweets.tweets.filter((tweet) => {
       return tweet.in_reply_to_text_id ===  tweetId
     })
     return Reply
+  }
 
+  const showReply = (tweetId, e) => {
+    setReplay_show('show')
+    const tem = getReply(tweetId);
+    setReq(tem);
   }
 
 
@@ -65,12 +79,12 @@ const Tweet = (tweets) => {
       tweets.tweets.slice(0, limit)
         .map((tweet, index) => {
         return <div key={index} >
-          { getTimeDate(tweet._created_at)}
           {
             tweet.in_reply_to_text_id ?
             <div></div>
             :
             <div>
+              { getTimeDate(tweet._created_at)}
               <hr/>
               <Row>
                 <Col xs={8} md={8}>
@@ -84,10 +98,10 @@ const Tweet = (tweets) => {
               <p className="pt-2 pb-2">{tweet.text} </p>
               <Row>
                 {
-                  getReply(tweet.id).length === 0 ? <Col xs={2} md={2}></Col> : <Col xs={2} md={2} className="text-end">
+                  getReplyCount(tweet.id).length === 0 ? <Col xs={2} md={2}></Col> : <Col xs={2} md={2} className="text-end">
                     {
-                    replay_show === 'hidden' ? <Image src={process.env.PUBLIC_URL + '/comment-alt.svg'} onClick={() => {setReplay_show('show')}}/>  : 
-                    <Image src={process.env.PUBLIC_URL + '/comment-alt-back.svg'} onClick={() => {setReplay_show('hidden')}}/> 
+                    replay_show === 'hidden' ? <Image src={process.env.PUBLIC_URL + '/comment-alt.svg'}  onClick={() => {showReply(tweet.id)}}/> :
+                    <Image src={process.env.PUBLIC_URL + '/comment-alt-back.svg'} onClick={() => {setReplay_show('hidden')}}/>
                     }
                   </Col>
                 }
@@ -100,11 +114,12 @@ const Tweet = (tweets) => {
 
 
               {
-                replay_show === "hidden" ? <div></div> :
                 <div>
                   {/* リプライの表示 */}
-                    {getReply(tweet.id).map((reply, index) => {
+                    {req.map((reply, index) => {
+                      if(reply.in_reply_to_text_id === tweet.id && replay_show === "show"){
                       return <div key={index} className="">
+                         { getTimeDate(reply._created_at)}
                         <hr className="mt-0"/>
                           {/* 返信先 */}
                           <Badge pill bg="primary">reply</Badge>
@@ -123,6 +138,7 @@ const Tweet = (tweets) => {
                             {dayOfWeekStrJP[new Date(reply._created_at).getDay()]}
                           </p>
                       </div>
+                      }
                     })}
                 </div>
               }
